@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Periódica Completa - 118 Elementos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#856be1',
+                        'secondary': '#718ed6',
+                        'dark': '#050510',
+                        'blue-accent': '#315eeb',
+                        'purple-accent': '#823beb',
+                        'bg-light': '#f3f4f6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { font-family: 'Inter', sans-serif; }
+        
+        .element-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .element-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .modal-enter { animation: modalFade 0.3s ease-out; }
+        
+        @keyframes modalFade {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #050510; }
+        ::-webkit-scrollbar-thumb { background: #856be1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #823beb; }
+        
+        .bohr-container {
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .bohr-atom {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto;
+        }
+        
+        .bohr-orbit {
+            position: absolute;
+            border: 2px solid rgba(133, 107, 225, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .bohr-nucleus {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #315eeb, #856be1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(133, 107, 225, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .bohr-electron {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #856be1, #823beb);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            animation: orbit linear infinite;
+            box-shadow: 0 0 8px rgba(133, 107, 225, 0.6);
+        }
+        
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(var(--radius)) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(var(--radius)) rotate(-360deg); }
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, rgba(133, 107, 225, 0.05), rgba(114, 142, 214, 0.02));
+            backdrop-filter: blur(10px);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #856be1, #823beb);
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-bg-light" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);">
+    
+    <!-- Header -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-dark via-blue-accent to-purple-accent shadow-2xl">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative px-6 py-6 md:py-8">
+            <div class="max-w-7xl mx-auto text-center">
+                <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">
+                    Tabela Periódica Completa
+                </h1>
+                <p class="text-base md:text-lg text-gray-200">
+                    118 Elementos Químicos | Modelo de Bohr Interativo
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="max-w-[1400px] mx-auto px-4 py-6">
+        <!-- Legenda -->
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-6">
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-pink-500"></div>
+                <span>Metal Alcalino</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500"></div>
+                <span>Metal Alcalino Terroso</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-gray-500 to-gray-600"></div>
+                <span>Metal de Transição</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                <span>Metal</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-green-400 to-green-600"></div>
+                <span>Metaloide</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
+                <span>Não-metal</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                <span>Halogênio</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white rounded-lg px-2 py-1 shadow-md text-xs">
+                <div class="w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-cyan-600"></div>
+                <span>Gás Nobre</span>
+            </div>
+        </div>
+
+        <!-- Tabela Periódica Grid -->
+        <div id="tabela-container" class="bg-white rounded-2xl shadow-2xl p-4 overflow-x-auto">
+            <div id="tabela-grid" class="grid gap-1.5 min-w-[1000px]" style="grid-template-columns: repeat(18, minmax(65px, 1fr));">
+                <div class="text-center text-xs font-bold text-gray-500 p-1"></div>
+                <!-- Cabeçalhos das colunas serão inseridos -->
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="text-center py-12 hidden">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden items-center justify-center z-50 p-4" onclick="fecharModal(event)">
+        <div class="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto modal-enter shadow-2xl" onclick="event.stopPropagation()">
+            <div id="modal-content" class="p-6">
+                <!-- Conteúdo dinâmico -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let elementosData = [];
+        let elementoAtual = null;
+
+        const coresPorGrupo = {
+            'Metal Alcalino': 'from-red-500 to-pink-500',
+            'Metal Alcalino Terroso': 'from-orange-500 to-yellow-500',
+            'Metal de Transição': 'from-gray-500 to-gray-600',
+            'Metal': 'from-blue-400 to-blue-600',
+            'Metaloide': 'from-green-400 to-green-600',
+            'Não-metal': 'from-yellow-400 to-yellow-600',
+            'Halogênio': 'from-purple-400 to-purple-600',
+            'Gás Nobre': 'from-cyan-400 to-cyan-600',
+            'Lantanídeo': 'from-indigo-400 to-indigo-600',
+            'Actinídeo': 'from-rose-400 to-rose-600'
+        };
+
+        async function carregarElementos() {
+            try {
+                document.getElementById('loading').classList.remove('hidden');
+                const response = await fetch('/api/elementos');
+                const data = await response.json();
+                
+                elementosData = data.Table.Row.map(row => {
+                    const cell = row.Cell;
+                    return {
+                        atomicNumber: parseInt(cell[0]),
+                        symbol: cell[1],
+                        name: cell[2],
+                        atomicMass: cell[3],
+                        groupBlock: cell[4],
+                        position: cell[5]
+                    };
+                });
+                
+                renderizarTabela();
+                document.getElementById('loading').classList.add('hidden');
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
+
+        function renderizarTabela() {
+            const container = document.getElementById('tabela-grid');
+            container.innerHTML = '';
+            
+            // Adicionar cabeçalhos
+            const colunas = ['', '1', '2', '', '', '', '', '', '', '', '', '', '', '13', '14', '15', '16', '17', '18'];
+            
+            // Renderizar 9 linhas
+            for (let linha = 1; linha <= 9; linha++) {
+                for (let col = 1; col <= 18; col++) {
+                    const elemento = elementosData.find(e => e.position?.linha === linha && e.position?.coluna === col);
+                    
+                    if (elemento) {
+                        const cor = coresPorGrupo[elemento.groupBlock] || 'from-gray-400 to-gray-500';
+                        const card = document.createElement('div');
+                        card.className = `element-card bg-gradient-to-br ${cor} text-white rounded-lg p-1.5 shadow-md hover:shadow-xl`;
+                        card.onclick = () => mostrarDetalhes(elemento.atomicNumber);
+                        card.innerHTML = `
+                            <div class="text-[10px] font-light opacity-80">${elemento.atomicNumber}</div>
+                            <div class="text-sm font-bold mt-0.5">${elemento.symbol}</div>
+                            <div class="text-[8px] mt-0.5 truncate">${elemento.name}</div>
+                        `;
+                        container.appendChild(card);
+                    } else {
+                        const empty = document.createElement('div');
+                        empty.className = 'bg-gray-50 rounded-lg p-1.5 border border-gray-100';
+                        empty.innerHTML = '<div class="invisible">0</div>';
+                        container.appendChild(empty);
+                    }
+                }
+            }
+        }
+
+        function desenharModeloBohr(camadas, elemento) {
+            const cores = ['#856be1', '#718ed6', '#315eeb', '#823beb'];
+            const tamanhos = [140, 110, 80, 50, 30];
+            
+            let html = '<div class="bohr-atom">';
+            
+            // Núcleo
+            html += `<div class="bohr-nucleus">
+                        <div class="text-center">
+                            <div class="text-xs font-bold">${elemento.simbolo}</div>
+                            <div class="text-[8px]">${elemento.atomic_number}</div>
+                        </div>
+                    </div>`;
+            
+            // Órbitas e elétrons
+            camadas.forEach((camada, index) => {
+                const nivel = camada.nivel;
+                const numEletrons = camada.eletrons;
+                const raio = 40 + (nivel * 25);
+                const cor = cores[index % cores.length];
+                
+                html += `<div class="bohr-orbit" style="width: ${raio * 2}px; height: ${raio * 2}px; border-color: ${cor}40;"></div>`;
+                
+                // Adicionar elétrons
+                for (let i = 0; i < numEletrons; i++) {
+                    const angle = (i / numEletrons) * 360;
+                    const delay = (i / numEletrons) * 4;
+                    html += `<div class="bohr-electron" style="
+                        --radius: ${raio}px;
+                        animation-duration: ${3 + nivel}s;
+                        animation-delay: -${delay}s;
+                        background: radial-gradient(circle, ${cor}, ${cor}dd);
+                        transform: rotate(${angle}deg) translateX(${raio}px) rotate(-${angle}deg);
+                    "></div>`;
+                }
+            });
+            
+            html += '</div>';
+            return html;
+        }
+
+        async function mostrarDetalhes(atomicNumber) {
+            try {
+                const response = await fetch(`/api/elemento/${atomicNumber}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    elementoAtual = data;
+                    const modalContent = document.getElementById('modal-content');
+                    
+                    modalContent.innerHTML = `
+                        <div class="flex justify-between items-start mb-4 pb-3 border-b">
+                            <div>
+                                <h2 class="text-3xl font-bold bg-gradient-to-r from-primary to-purple-accent bg-clip-text text-transparent">
+                                    ${data.nome} (${data.simbolo})
+                                </h2>
+                                <p class="text-gray-500">Número Atômico: ${data.atomic_number} | Massa: ${data.massa_atomica} u</p>
+                            </div>
+                            <button onclick="fecharModal()" class="text-gray-400 hover:text-gray-600 transition text-2xl">&times;</button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 mb-4">
+                                    <h3 class="font-semibold text-gray-800 mb-3">📊 Informações Gerais</h3>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex justify-between"><span class="text-gray-600">Grupo:</span><span class="font-semibold">${data.grupo}</span></div>
+                                        <div class="flex justify-between"><span class="text-gray-600">Série:</span><span class="font-semibold">${data.serie || data.grupo}</span></div>
+                                        <div class="flex justify-between"><span class="text-gray-600">Configuração:</span><span class="font-mono text-xs">${data.configuracao}</span></div>
+                                        <div class="flex justify-between"><span class="text-gray-600">Total elétrons:</span><span class="font-semibold">${data.total_eletrons}</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4">
+                                    <h3 class="font-semibold text-gray-800 mb-3">🔬 Distribuição Eletrônica</h3>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                        ${data.camadas_eletronicas.map(camada => `
+                                            <div class="bg-white rounded-lg p-2 text-center shadow-sm">
+                                                <div class="text-lg font-bold text-primary">${camada.camada}</div>
+                                                <div class="text-2xl font-bold">${camada.eletrons}</div>
+                                                <div class="text-xs text-gray-500">elétrons</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bohr-container">
+                                ${desenharModeloBohr(data.camadas_eletronicas, data)}
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex gap-3">
+                            <button onclick="fecharModal()" class="flex-1 bg-gradient-to-r from-primary to-purple-accent text-white font-semibold py-2 rounded-lg hover:shadow-lg transition">
+                                Fechar
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('modal').classList.remove('hidden');
+                    document.getElementById('modal').classList.add('flex');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        function fecharModal(event) {
+            if (!event || event.target === document.getElementById('modal') || !event) {
+                document.getElementById('modal').classList.add('hidden');
+                document.getElementById('modal').classList.remove('flex');
+            }
+        }
+
+        carregarElementos();
+    </script>
+</body>
+</html>
